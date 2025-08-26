@@ -1,20 +1,20 @@
 import { useState, type FormEvent, type PropsWithChildren } from "react";
 import { Modal, Box, Typography, TextField, Button, Stack } from "@mui/material";
 
-export function RoomForm({ children }: PropsWithChildren) {
+export function RoomForm({ children, type }: PropsWithChildren & {type: 'create' | 'join'}) {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setOpen(true);
+        setName("");
+    };
     const handleClose = () => setOpen(false);
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-
-    }
+    };
     return (
         <>
-            <div onClick={handleOpen}>
-            {children}
-            </div>
+            <div onClick={handleOpen}>{children}</div>
             <Modal open={open} onClose={handleClose}>
                 <Box
                     sx={{
@@ -30,13 +30,13 @@ export function RoomForm({ children }: PropsWithChildren) {
                     }}
                 >
                     <Typography variant="h6" mb={2} color="primary">
-                        Enter Room Name
+                        Enter Room {type === 'create' ? 'Name' : 'Code'}
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <Stack spacing={2}>
-                            <TextField label="Room Name" variant="outlined" value={name} onChange={(e) => setName(e.target.value)} fullWidth />
+                            <TextField label={`Room ${type === 'create' ? 'name' : 'code'}`} variant="outlined" value={name} onChange={(e) => setName(e.target.value)} fullWidth />
                             <Button type="submit" variant="contained" color="primary">
-                                Submit
+                                {type === 'create' ? 'Create' : 'Join'}
                             </Button>
                         </Stack>
                     </form>

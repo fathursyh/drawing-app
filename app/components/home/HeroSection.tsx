@@ -8,7 +8,7 @@ export function HeroSection() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                background: "linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)",
+                background: "linear-gradient(0deg,rgba(51, 15, 15, 1) 0%, rgba(217, 41, 41, 1) 100%);",
                 px: 2,
                 minHeight: "100%",
             }}
@@ -17,18 +17,20 @@ export function HeroSection() {
                 <Typography variant="h2" fontWeight={700} color="primary">
                     Unleash Your Creativity
                 </Typography>
-                <Typography variant="h6" color="textSecondary" textAlign="center" maxWidth={500}>
+                <Typography variant="h6" color="inherit" textAlign="center" maxWidth={500}>
                     Welcome to the Drawing App! Sketch, doodle, and bring your ideas to life with our easy-to-use tools.
                 </Typography>
                 <Stack direction="row" spacing={2}>
-                    <RoomForm>
+                    <RoomForm type="create">
                         <Button variant="contained" color="success" size="large">
                             Start Drawing
                         </Button>
                     </RoomForm>
-                    <Button variant="outlined" color="primary" size="large">
-                        Learn More
-                    </Button>
+                    <RoomForm type="join">
+                        <Button variant="outlined" color="inherit" size="large">
+                            Join Room
+                        </Button>
+                    </RoomForm>
                 </Stack>
             </Stack>
         </Box>
