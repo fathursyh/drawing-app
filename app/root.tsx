@@ -25,6 +25,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <Meta />
                 <Links />
+                <title>Drawing App</title>
             </head>
             <body>
                 {children}
@@ -38,7 +39,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
     return (
         <main className="h-full">
-            <ResponsiveAppBar />
+            {/* <ResponsiveAppBar /> */}
             <Outlet />
         </main>
     );
