@@ -39,7 +39,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
     return (
         <main className="h-full">
-            {/* <ResponsiveAppBar /> */}
+            <ResponsiveAppBar />
             <Outlet />
         </main>
     );
