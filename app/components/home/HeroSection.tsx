@@ -8,17 +8,17 @@ export function HeroSection() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                background: "linear-gradient(0deg,rgba(51, 15, 15, 1) 0%, rgba(217, 41, 41, 1) 100%);",
+                background: "linear-gradient(0deg,rgba(51, 15, 15, 1) 0%, rgba(150, 41, 41, 1) 100%);",
                 px: 2,
                 minHeight: "100%",
             }}
         >
             <Stack spacing={4} alignItems="center">
-                <Typography variant="h2" fontWeight={700} color="primary">
+                <Typography variant="h2" fontWeight={700} color="inherit">
                     Unleash Your Creativity
                 </Typography>
                 <Typography variant="h6" color="inherit" textAlign="center" maxWidth={500}>
-                    Welcome to the Drawing App! Sketch, doodle, and bring your ideas to life with our easy-to-use tools.
+                    Welcome to Draw Together! Sketch, doodle and connecting with your friends.
                 </Typography>
                 <Stack direction="row" spacing={2}>
                     <RoomForm type="create">
