@@ -4,8 +4,11 @@ import ColorSelect from "./ColorSelect";
 import { useDrawing } from "~/hooks/useDrawing";
 import { useEffect, useMemo } from "react";
 import StrokeSelect from "./StrokeSelect";
+import { roomApi } from "~/api/roomApi";
+import { useRoom } from "~/stores/room";
 
 const CanvasSection = () => {
+    const {room} = useRoom();
     const {
         tool, color, lines, stroke, containerRef, dimensions, changeColor, changeTool, changeStroke, handleMouseDown, handleMouseMove, handleMouseUp, handleUndo, handleRedo
     } = useDrawing();
@@ -13,7 +16,12 @@ const CanvasSection = () => {
     useEffect(() => {
         window.addEventListener('keydown', handleCtrlZ);
         return () => window.removeEventListener('keydown', handleCtrlZ);
-    }, [lines])
+    }, [lines]);
+
+    useEffect(() => {
+        roomApi.fetchRoomData(room.id);
+    }, []);
+
     function handleCtrlZ(e: KeyboardEvent) {
         if (e.ctrlKey && e.key === 'z') {
             e.preventDefault();

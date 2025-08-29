@@ -4,7 +4,7 @@ export function useDrawing() {
     const [tool, setTool] = useState("pen");
     const [color, setColor] = useState('Black');
 
-    const [stroke, setStroke] = useState(3);
+    const [stroke, setStroke] = useState(1);
     const [lines, setLines] = useState<any[]>([]);
     const isDrawing = useRef(false);
 

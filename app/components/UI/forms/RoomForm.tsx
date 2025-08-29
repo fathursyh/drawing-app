@@ -1,9 +1,12 @@
 import { useActionState, useState, type PropsWithChildren } from "react";
-import { Modal, Box, Typography, TextField, Button, Stack } from "@mui/material";
+import { Modal, Box, Typography, TextField, Button, Stack, CircularProgress, Container } from "@mui/material";
 import { useNavigate } from "react-router";
+import { roomApi } from "~/api/roomApi";
+import { useRoom } from "~/stores/room";
 
 const initialValue = { error: false, room: null };
 export function RoomForm({ children, type }: PropsWithChildren & { type: "create" | "join" }) {
+    const { changeRoom } = useRoom();
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -18,19 +21,17 @@ export function RoomForm({ children, type }: PropsWithChildren & { type: "create
 
     const submitAction = async (_: any, data: FormData): Promise<any> => {
         const { room } = Object.fromEntries(data.entries());
-        try {
-            if (room === null || room === "") throw new Error();
+        if (room === null || room === "") return {error: 'Input cannot be empty.', room}
 
-            // * call firebase
-
-            navigate(`/draw?room=${room}`);
-            return { error: false, room };
-        } catch (err) {
-            return { error: true, room };
-        }
+        // * call firebase
+        const {roomData, error} = await roomApi.createNewRoom(room.toString());
+        if (error) return { error, room };
+        changeRoom(roomData!);
+        await navigate(`/draw?room=${room}`);
+        return { room }
     };
 
-    const [state, formAction, isPending] = useActionState(submitAction, initialValue);
+    const [state, formAction, isSubmitting] = useActionState(submitAction, initialValue);
 
     if (!open) return <div onClick={handleOpen}>{children}</div>;
 
@@ -58,16 +59,23 @@ export function RoomForm({ children, type }: PropsWithChildren & { type: "create
                             autoFocus
                             label={`Room ${type === "create" ? "name" : "code"}`}
                             variant="outlined"
+                            disabled={isSubmitting}
                             name="room"
                             fullWidth
                             required
                             defaultValue={state?.room}
                             error={state?.error}
-                            helperText={state?.error && "Room cannot be empty."}
+                            helperText={state?.error}
                         />
-                        <Button type="submit" variant="contained" color="primary">
-                            {type === "create" ? "Create" : "Join"}
-                        </Button>
+                        {!isSubmitting ? (
+                            <Button type="submit" variant="contained" color="primary">
+                                {type === "create" ? "Create" : "Join"}
+                            </Button>
+                        ) : (
+                            <Container sx={{ width: "100%", display: "grid", placeItems: "center" }}>
+                                <CircularProgress size={26} className="mx-auto" />
+                            </Container>
+                        )}
                     </Stack>
                 </form>
             </Box>

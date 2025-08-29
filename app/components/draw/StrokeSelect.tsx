@@ -4,7 +4,7 @@ import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import { Box } from '@mui/material';
 import { memo } from 'react';
 
-const STROKES = [3, 5, 7, 9];
+const STROKES = [1, 3, 5, 7, 9];
 
 type StrokeSelectProps = {
     stroke: number,
@@ -20,13 +20,13 @@ function StrokeSelect({ stroke, onChangeStroke }: StrokeSelectProps) {
         <Box>
             <FormControl>
                 <Select
-                    labelId="color-label"
-                    id="color"
+                    labelId="stroke-label"
+                    id="stroke"
                     variant='outlined'
                     size='small'
                     sx={{ height: 48 }}
                     value={stroke.toString()}
-                    label="color"
+                    label="stroke"
                     onChange={handleChange}
                 >
                     {
