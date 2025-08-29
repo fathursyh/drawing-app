@@ -2,13 +2,28 @@ import { Stage, Layer, Line } from "react-konva";
 import DrawTools from "./DrawTools";
 import ColorSelect from "./ColorSelect";
 import { useDrawing } from "~/hooks/useDrawing";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import StrokeSelect from "./StrokeSelect";
 
 const CanvasSection = () => {
     const {
-        tool, color, lines, stroke, containerRef, dimensions, changeColor, changeTool, changeStroke, handleMouseDown, handleMouseMove, handleMouseUp
-    } = useDrawing()
+        tool, color, lines, stroke, containerRef, dimensions, changeColor, changeTool, changeStroke, handleMouseDown, handleMouseMove, handleMouseUp, handleUndo, handleRedo
+    } = useDrawing();
+
+    useEffect(() => {
+        window.addEventListener('keydown', handleCtrlZ);
+        return () => window.removeEventListener('keydown', handleCtrlZ);
+    }, [lines])
+    function handleCtrlZ(e: KeyboardEvent) {
+        if (e.ctrlKey && e.key === 'z') {
+            e.preventDefault();
+            handleUndo();
+        }
+        if (e.ctrlKey && e.key === 'y') {
+            e.preventDefault();
+            handleRedo();
+        }
+    }
 
     const StageArea = useMemo(() => (
         <Stage
@@ -46,7 +61,7 @@ const CanvasSection = () => {
 
     return (
         <div ref={containerRef} className="text-black w-full h-full">
-            <aside className="fixed z-40 bottom-2 left-1/2 -translate-x-1/2 h-14 flex justify-center items-center">
+            <aside className="fixed bg-white/80 z-40 bottom-2 left-1/2 -translate-x-1/2 h-fit flex justify-center items-center">
                 <DrawTools onChangeTool={changeTool} draw={tool} />
                 <ColorSelect onChangeColor={changeColor} color={color} />
                 <StrokeSelect stroke={stroke} onChangeStroke={changeStroke} />

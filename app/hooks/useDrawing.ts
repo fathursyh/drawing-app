@@ -9,6 +9,7 @@ export function useDrawing() {
     const isDrawing = useRef(false);
 
     const containerRef = useRef<HTMLDivElement>(null);
+    const history = useRef<any[]>([]);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
@@ -59,7 +60,18 @@ export function useDrawing() {
 
     const handleMouseUp = () => {
         isDrawing.current = false;
+        history.current = lines;
     };
+
+    const handleUndo = () => {
+        if (lines.length === 0) return;
+        setLines(prev => prev.slice(0, -1))
+    }
+
+    const handleRedo = () => {
+        if (lines.length === history.current.length) return;
+        setLines(prev => [...prev, history.current[lines.length]]);
+    }
 
     return {
         tool,
@@ -73,6 +85,8 @@ export function useDrawing() {
         changeStroke,
         handleMouseDown,
         handleMouseMove,
-        handleMouseUp
+        handleMouseUp,
+        handleUndo,
+        handleRedo,
     }
 }
